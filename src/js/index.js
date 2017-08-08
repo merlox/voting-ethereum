@@ -9,7 +9,6 @@ class App extends React.Component{
       super()
 
       let provider = null
-      this.Voting = contract(votingArtifacts)
 
       if(typeof web3 != 'undefined'){
          console.log("Using web3 detected from external source like Metamask")
@@ -21,18 +20,10 @@ class App extends React.Component{
          this.web3 = new Web3(provider)
       }
 
+      this.Voting = contract(votingArtifacts)
       this.Voting.setProvider(provider)
-      this.state = {
-         Meru: 0,
-         Irene: 0,
-         Maria: 0,
-      }
-
-      // Generamos el html del <select>
-      this.candidateOptions = Object.keys(this.state).map(candidateName => {
-         this.getCandidateVotes(candidateName)
-         return <option key={candidateName}>{candidateName}</option>
-      })
+      this.state = {}
+      this.getAllCandidates()
    }
 
    voteCandidate(candidateToVote){
@@ -46,7 +37,6 @@ class App extends React.Component{
       })
    }
 
-   // TODO Fix why the votes are not getting saved or why it returns always 0
    getCandidateVotes(candidate){
       this.Voting.deployed().then(contractInstance => {
          contractInstance.getVotesCandidate.call(candidate).then(votes => {
@@ -60,6 +50,40 @@ class App extends React.Component{
       })
    }
 
+   getAllCandidates(){
+      this.Voting.deployed().then(instance => {
+         instance.getAllCandidates.call().then(candidates => {
+            let candidatesNames = candidates.map(candidate => {
+               let name = this.web3.toUtf8(candidate)
+               if(name.length > 0)
+                  return name
+            })
+
+            candidatesNames.forEach((candidate, index) => {
+               instance.getVotesCandidate.call(candidate).then(votes => {
+                  return parseInt(votes)
+               }).then(votes => {
+                  this.setState({
+                     [candidatesNames[index]]: votes
+                  })
+               })
+            })
+         })
+      })
+   }
+
+   addNewCandidate(candidateName){
+      if(candidateName != 'undefined' && candidateName.length > 0){
+         const candidateNameHex = this.web3.fromUtf8(candidateName)
+
+         this.Voting.deployed().then(instance => {
+            return instance.createCandidate(candidateNameHex, {gas: 2000000, from: this.web3.eth.accounts[0]})
+         }).then(result => {
+            this.getCandidateVotes(candidateName)
+         })
+      }
+   }
+
    render(){
       return(
          <div>
@@ -70,28 +94,35 @@ class App extends React.Component{
                      <th>Candidate</th>
                      <th>Votes</th>
                   </tr>
-                  <tr>
-                     <td>Meru</td>
-                     <td ref="candidate-1">{this.state.Meru}</td>
-                  </tr>
-                  <tr>
-                     <td>Irene</td>
-                     <td ref="candidate-2">{this.state.Irene}</td>
-                  </tr>
-                  <tr>
-                     <td>Maria</td>
-                     <td ref="candidate-3">{this.state.Maria}</td>
-                  </tr>
+                  {
+                     Object.keys(this.state).map(candidateName => {
+                        return (<tr key={candidateName}>
+                           <td>{candidateName}</td>
+                           <td>{this.state[candidateName]}</td>
+                        </tr>)
+                     })
+                  }
                </tbody>
             </table>
-            <select ref='vote-candidate'>{this.candidateOptions}</select>
-            <button onClick={() => {
 
-               // Seleccionamos el option correcto
+            <select ref='vote-candidate'>
+               {
+                  Object.keys(this.state).map(candidateName => {
+                     return <option key={candidateName}>{candidateName}</option>
+                  })
+               }
+            </select>
+            <button onClick={() => {
                this.voteCandidate(
                   this.refs['vote-candidate'].children[this.refs['vote-candidate'].selectedIndex].innerHTML
                )
             }}>Send Vote</button>
+
+            <input type="text" ref="new-candidate" placeholder="Add new candidate"/>
+            <button onClick={() => {
+               this.addNewCandidate(this.refs['new-candidate'].value.trim())
+               this.refs['new-candidate'].value = ''
+            }}>Add new candidate</button>
          </div>
       )
    }

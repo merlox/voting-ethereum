@@ -37,16 +37,22 @@ contract('Voting', accounts => {
       })
    })
 
-   it('Should add a candidate that doesn\'t exist', () => {
+   it('Should add a candidate Merlox that doesn\'t exist', () => {
       let instance = null
+      let name = 'Merlox'
 
       return Voting.deployed().then(thisInstance => {
          instance = thisInstance
-         return instance.createCandidate('Merlox')
+         return instance.createCandidate(name)
       }).then(result => {
-         return instance.checkCandidateExists.call('Merlox')
-      }).then(exists => {
-         assert.equal(exists, true)
+         return instance.getAllCandidates.call()
+      }).then(candidates => {
+         candidates = candidates.map(cand => {
+            let candidate = web3.toUtf8(cand)
+            console.log(candidate)
+            return candidate
+         })
+         assert.notEqual(candidates.indexOf(name), -1, 'Couldn\'t find the candidate in the array')
       })
    })
 })
