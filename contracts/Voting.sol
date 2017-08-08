@@ -2,11 +2,13 @@ pragma solidity ^0.4.11;
 
 contract Voting{
    bytes32[] public candidates;
+   address owner;
 
    mapping(bytes32 => uint8) public votesForCandidates;
 
    function Voting(bytes32[] initialCandidates){
       candidates = initialCandidates;
+      owner = msg.sender;
    }
 
    function checkCandidateExists(bytes32 candidate) constant returns(bool){

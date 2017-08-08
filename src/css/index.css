@@ -1,0 +1,33 @@
+body{
+   font-family: 'open sans';
+}
+table td, table th{
+   border: 1px solid lightgrey;
+   border-radius: 5px;
+   padding: 20px;
+}
+h1{
+   color: rgb(33, 33, 33);
+}
+button{
+   padding: 20px;
+   border-radius: 3px;
+   border: none;
+   background-color: rgb(103, 156, 255);
+   color: white;
+   margin: 5px;
+}
+button:hover{
+   opacity: 0.9;
+}
+button:active{
+   opacity: 0.7;
+}
+section{
+   margin: 10px 0;
+}
+input, select{
+   padding: 20px;
+   border-radius: 5px;
+   border: 1px solid lightgrey;
+}

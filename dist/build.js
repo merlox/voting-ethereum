@@ -28904,6 +28904,8 @@ var _truffleContract = __webpack_require__(308);
 
 var _truffleContract2 = _interopRequireDefault(_truffleContract);
 
+__webpack_require__(394);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -29017,7 +29019,12 @@ var App = function (_React$Component) {
             _react2.default.createElement(
                'h1',
                null,
-               'Voting candidates table'
+               'Vote for the best president'
+            ),
+            _react2.default.createElement(
+               'p',
+               null,
+               'Your vote will be reflected when the next block is mined'
             ),
             _react2.default.createElement(
                'table',
@@ -29058,31 +29065,39 @@ var App = function (_React$Component) {
                )
             ),
             _react2.default.createElement(
-               'select',
-               { ref: 'vote-candidate' },
-               Object.keys(this.state).map(function (candidateName) {
-                  return _react2.default.createElement(
-                     'option',
-                     { key: candidateName },
-                     candidateName
-                  );
-               })
+               'section',
+               null,
+               _react2.default.createElement(
+                  'select',
+                  { ref: 'vote-candidate' },
+                  Object.keys(this.state).map(function (candidateName) {
+                     return _react2.default.createElement(
+                        'option',
+                        { key: candidateName },
+                        candidateName
+                     );
+                  })
+               ),
+               _react2.default.createElement(
+                  'button',
+                  { onClick: function onClick() {
+                        _this6.voteCandidate(_this6.refs['vote-candidate'].children[_this6.refs['vote-candidate'].selectedIndex].innerHTML);
+                     } },
+                  'Send Vote'
+               )
             ),
             _react2.default.createElement(
-               'button',
-               { onClick: function onClick() {
-                     _this6.voteCandidate(_this6.refs['vote-candidate'].children[_this6.refs['vote-candidate'].selectedIndex].innerHTML);
-                  } },
-               'Send Vote'
-            ),
-            _react2.default.createElement('input', { type: 'text', ref: 'new-candidate', placeholder: 'Add new candidate' }),
-            _react2.default.createElement(
-               'button',
-               { onClick: function onClick() {
-                     _this6.addNewCandidate(_this6.refs['new-candidate'].value.trim());
-                     _this6.refs['new-candidate'].value = '';
-                  } },
-               'Add new candidate'
+               'section',
+               null,
+               _react2.default.createElement('input', { type: 'text', ref: 'new-candidate', placeholder: 'Add new candidate' }),
+               _react2.default.createElement(
+                  'button',
+                  { onClick: function onClick() {
+                        _this6.addNewCandidate(_this6.refs['new-candidate'].value.trim());
+                        _this6.refs['new-candidate'].value = '';
+                     } },
+                  'Add new candidate'
+               )
             )
          );
       }
@@ -47943,7 +47958,7 @@ module.exports = IpcProvider;
 /* 307 */
 /***/ (function(module, exports) {
 
-module.exports = {"contract_name":"Voting","abi":[{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"getVotesCandidate","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getAllCandidates","outputs":[{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidates","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"createCandidate","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteCandidate","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"checkCandidateExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesForCandidates","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"inputs":[{"name":"initialCandidates","type":"bytes32[]"}],"payable":false,"type":"constructor"}],"unlinked_binary":"0x6060604052341561000c57fe5b604051610472380380610472833981016040528051015b805161003690600090602084019061003e565b505b506100ad565b82805482825590600052602060002090810192821561007b579160200282015b8281111561007b578251825560209092019160019091019061005e565b5b5061008892915061008c565b5090565b6100aa91905b808211156100885760008155600101610092565b5090565b90565b6103b6806100bc6000396000f300606060405236156100675763ffffffff60e060020a6000350416630a5621eb81146100695780632e6997fe146100925780633477ee2e146100fd5780634b854e2914610122578063831b750314610137578063bbcc07401461014c578063c68130dc14610173575bfe5b341561007157fe5b61007c60043561019c565b6040805160ff9092168252519081900360200190f35b341561009a57fe5b6100a26101cb565b60408051602080825283518183015283519192839290830191858101910280838382156100ea575b8051825260208311156100ea57601f1990920191602091820191016100ca565b5050509050019250505060405180910390f35b341561010557fe5b61011060043561022b565b60408051918252519081900360200190f35b341561012a57fe5b61013560043561024e565b005b341561013f57fe5b610135600435610287565b005b341561015457fe5b61015f6004356102c6565b604080519115158252519081900360200190f35b341561017b57fe5b61007c600435610318565b6040805160ff9092168252519081900360200190f35b60006101a7826102c6565b15156001146101b257fe5b5060008181526001602052604090205460ff165b919050565b6101d361032d565b600080548060200260200160405190810160405280929190818152602001828054801561022057602002820191906000526020600020905b8154815260019091019060200180831161020b575b505050505090505b90565b600080548290811061023957fe5b906000526020600020900160005b5054905081565b610257816102c6565b1561025e57fe5b6000805460018101610270838261033f565b916000526020600020900160005b50829055505b50565b610290816102c6565b151560011461029b57fe5b6000818152600160208190526040909120805460ff19811660ff918216909301169190911790555b50565b6000805b60005481101561030d5760008054849190839081106102e557fe5b906000526020600020900160005b505414156103045760019150610312565b5b6001016102ca565b600091505b50919050565b60016020526000908152604090205460ff1681565b60408051602081019091526000815290565b81548183558181151161036357600083815260209020610363918101908301610369565b5b505050565b61022891905b80821115610383576000815560010161036f565b5090565b905600a165627a7a7230582023eff9d42f7606a5db3efd439d8f1c99e7d459d317cee5d7aac40b37f6a135770029","networks":{"1337":{"events":{},"links":{},"address":"0x070710148f1795edd5329fab006de02cfa4d69b8","updated_at":1502188006479},"1502053685320":{"events":{},"links":{},"address":"0x30727225b6e85bc34bbce9dbf33f2eb8d5d3b131","updated_at":1502053833981}},"schema_version":"0.0.5","updated_at":1502188006479}
+module.exports = {"contract_name":"Voting","abi":[{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"getVotesCandidate","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getAllCandidates","outputs":[{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"candidates","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"createCandidate","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteCandidate","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"checkCandidateExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"bytes32"}],"name":"votesForCandidates","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"inputs":[{"name":"initialCandidates","type":"bytes32[]"}],"payable":false,"type":"constructor"}],"unlinked_binary":"0x6060604052341561000c57fe5b604051610488380380610488833981016040528051015b8051610036906000906020840190610059565b5060018054600160a060020a03191633600160a060020a03161790555b506100c8565b828054828255906000526020600020908101928215610096579160200282015b828111156100965782518255602090920191600190910190610079565b5b506100a39291506100a7565b5090565b6100c591905b808211156100a357600081556001016100ad565b5090565b90565b6103b1806100d76000396000f300606060405236156100675763ffffffff60e060020a6000350416630a5621eb81146100695780632e6997fe146100925780633477ee2e146100fd5780634b854e2914610122578063831b750314610137578063bbcc07401461014c578063c68130dc14610173575bfe5b341561007157fe5b61007c60043561019c565b6040805160ff9092168252519081900360200190f35b341561009a57fe5b6100a26101cb565b60408051602080825283518183015283519192839290830191858101910280838382156100ea575b8051825260208311156100ea57601f1990920191602091820191016100ca565b5050509050019250505060405180910390f35b341561010557fe5b61011060043561022b565b60408051918252519081900360200190f35b341561012a57fe5b61013560043561024e565b005b341561013f57fe5b610135600435610287565b005b341561015457fe5b61015f6004356102c1565b604080519115158252519081900360200190f35b341561017b57fe5b61007c600435610313565b6040805160ff9092168252519081900360200190f35b60006101a7826102c1565b15156001146101b257fe5b5060008181526002602052604090205460ff165b919050565b6101d3610328565b600080548060200260200160405190810160405280929190818152602001828054801561022057602002820191906000526020600020905b8154815260019091019060200180831161020b575b505050505090505b90565b600080548290811061023957fe5b906000526020600020900160005b5054905081565b610257816102c1565b1561025e57fe5b6000805460018101610270838261033a565b916000526020600020900160005b50829055505b50565b610290816102c1565b151560011461029b57fe5b6000818152600260205260409020805460ff8082166001011660ff199091161790555b50565b6000805b6000548110156103085760008054849190839081106102e057fe5b906000526020600020900160005b505414156102ff576001915061030d565b5b6001016102c5565b600091505b50919050565b60026020526000908152604090205460ff1681565b60408051602081019091526000815290565b81548183558181151161035e5760008381526020902061035e918101908301610364565b5b505050565b61022891905b8082111561037e576000815560010161036a565b5090565b905600a165627a7a7230582062fa08b75b1077e6f9833049fe90a58dac81ee260195da69b77ccacfc18b1b240029","networks":{"1337":{"events":{},"links":{},"address":"0x341169fc71b4cfc61b6842f85477d03ae1326ee4","updated_at":1502191392661},"1502053685320":{"events":{},"links":{},"address":"0x30727225b6e85bc34bbce9dbf33f2eb8d5d3b131","updated_at":1502053833981}},"schema_version":"0.0.5","updated_at":1502191392661}
 
 /***/ }),
 /* 308 */
@@ -64249,6 +64264,587 @@ IpcProvider.prototype.sendAsync = function (payload, callback) {
 
 module.exports = IpcProvider;
 
+
+
+/***/ }),
+/* 394 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(395);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(397)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./index.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./index.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 395 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(396)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "body{\r\n   font-family: 'open sans';\r\n}\r\ntable td, table th{\r\n   border: 1px solid lightgrey;\r\n   border-radius: 5px;\r\n   padding: 20px;\r\n}\r\nh1{\r\n   color: rgb(33, 33, 33);\r\n}\r\nbutton{\r\n   padding: 20px;\r\n   border-radius: 3px;\r\n   border: none;\r\n   background-color: rgb(103, 156, 255);\r\n   color: white;\r\n   margin: 5px;\r\n}\r\nbutton:hover{\r\n   opacity: 0.9;\r\n}\r\nbutton:active{\r\n   opacity: 0.7;\r\n}\r\nsection{\r\n   margin: 10px 0;\r\n}\r\ninput, select{\r\n   padding: 20px;\r\n   border-radius: 5px;\r\n   border: 1px solid lightgrey;\r\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 396 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+/* 397 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(398);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 398 */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
 
 
 /***/ })

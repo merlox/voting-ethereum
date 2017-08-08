@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import {default as Web3} from 'web3'
 import votingArtifacts from './../../build/contracts/Voting.json'
 import contract from 'truffle-contract'
+import './../css/index.css'
 
 class App extends React.Component{
    constructor(){
@@ -87,7 +88,8 @@ class App extends React.Component{
    render(){
       return(
          <div>
-            <h1>Voting candidates table</h1>
+            <h1>Vote for the best president</h1>
+            <p>Your vote will be reflected when the next block is mined</p>
             <table>
                <tbody>
                   <tr>
@@ -105,24 +107,28 @@ class App extends React.Component{
                </tbody>
             </table>
 
-            <select ref='vote-candidate'>
-               {
-                  Object.keys(this.state).map(candidateName => {
-                     return <option key={candidateName}>{candidateName}</option>
-                  })
-               }
-            </select>
-            <button onClick={() => {
-               this.voteCandidate(
-                  this.refs['vote-candidate'].children[this.refs['vote-candidate'].selectedIndex].innerHTML
-               )
-            }}>Send Vote</button>
+            <section>
+               <select ref='vote-candidate'>
+                  {
+                     Object.keys(this.state).map(candidateName => {
+                        return <option key={candidateName}>{candidateName}</option>
+                     })
+                  }
+               </select>
+               <button onClick={() => {
+                  this.voteCandidate(
+                     this.refs['vote-candidate'].children[this.refs['vote-candidate'].selectedIndex].innerHTML
+                  )
+               }}>Send Vote</button>
+            </section>
 
-            <input type="text" ref="new-candidate" placeholder="Add new candidate"/>
-            <button onClick={() => {
-               this.addNewCandidate(this.refs['new-candidate'].value.trim())
-               this.refs['new-candidate'].value = ''
-            }}>Add new candidate</button>
+            <section>
+               <input type="text" ref="new-candidate" placeholder="Add new candidate"/>
+               <button onClick={() => {
+                  this.addNewCandidate(this.refs['new-candidate'].value.trim())
+                  this.refs['new-candidate'].value = ''
+               }}>Add new candidate</button>
+            </section>
          </div>
       )
    }

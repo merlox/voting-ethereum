@@ -7,17 +7,17 @@ module.exports = {
       filename: 'build.js'
    },
    module: {
-      loaders: [
-      {
+      loaders: [{
+         test: /\.css$/,
+         use: ['style-loader', 'css-loader'],
+         include: /src/
+      }, {
          loader: 'babel-loader',
          test: /\.jsx?$/,
          exclude: /node_modules/,
          query: {
             presets: ['es2015', 'react', 'stage-2']
          }
-      }, {
-         loader: 'css-loader!style-loader',
-         test: /\.css$/
       }, {
          loader: 'json-loader',
          test: /\.json$/
