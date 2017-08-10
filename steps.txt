@@ -1,0 +1,11 @@
+1. Create the contract in solidity.
+2. Compile the contract using truffle or browser solidity or the command line function "solc" from npm.
+3. Deploy the contract using it's abi, the bytecode and the address that will publish the contract. After this, you will get the contract address.
+4. Use the abi and the address to connect to the contract in your frontend. Take a look below.
+5. Start to call constant functions with a callback that has an (err, result). If they are not constant, you must specify the gas and the from address. The gas must be 21.000 or more, preferibly 100.000.
+
+const MyContract = web3.eth.contract([{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"getVotesCandidate","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getAllCandidates","outputs":[{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"createCandidate","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"voteCandidate","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"candidate","type":"bytes32"}],"name":"checkCandidateExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"inputs":[{"name":"initialCandidates","type":"bytes32[]"}],"payable":false,"type":"constructor"}])
+
+const instance = MyContract.at('0xd320124f114fcf30b56cac0bd826d0554e1a44f8')
+
+instance.getAllCandidates((err, result) => {console.log(err); console.log(result); window.a = result;})
