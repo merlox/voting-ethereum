@@ -5,9 +5,9 @@ module.exports = {
       port: 8545,
       network_id: "*" // Match any network id
    }, live: {
-      host: '123.456.789',
+      host: '217.182.195.23', // gateway.ipfs.io
       port: 80,
-      network_id: 1
+      network_id: 3
    }
   }
 };

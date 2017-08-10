@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {default as Web3} from 'web3'
 import votingArtifacts from './../../build/contracts/Voting.json'
-import contract from 'truffle-contract'
 import './../css/index.css'
 
 class App extends React.Component{
@@ -21,52 +20,44 @@ class App extends React.Component{
          this.web3 = new Web3(provider)
       }
 
-      this.Voting = contract(votingArtifacts)
-      this.Voting.setProvider(provider)
+      const MyContract = web3.eth.contract(votingArtifacts.abi)
+      this.ContractInstance = MyContract.at('0xd320124f114fcf30b56cac0bd826d0554e1a44f8')
       this.state = {}
       this.getAllCandidates()
    }
 
    voteCandidate(candidateToVote){
-      this.Voting.deployed().then(contractInstance => {
 
-         // Votamos al candidato y luego actualizamos el state de ese candidato
-         // POST Request require gas y from
-         contractInstance.voteCandidate(candidateToVote, {gas: 20000000, from: this.web3.eth.accounts[0]}).then(a => {
-            this.getCandidateVotes(candidateToVote)
-         })
+      // Votamos al candidato y luego actualizamos el state de ese candidato
+      // POST Request require gas y from
+      this.ContractInstance.voteCandidate(candidateToVote, {gas: 100000, from: this.web3.eth.accounts[0]}, (err, result) => {
+         this.getCandidateVotes(candidateToVote)
       })
    }
 
    getCandidateVotes(candidate){
-      this.Voting.deployed().then(contractInstance => {
-         contractInstance.getVotesCandidate.call(candidate).then(votes => {
-            votes = parseInt(votes)
+      this.ContractInstance.getVotesCandidate(candidate, (err, votes) => {
+         votes = parseInt(votes)
 
-            // GET Request no require gas ni from
-            this.setState({
-               [candidate]: votes
-            })
+         // GET Request no require gas ni from
+         this.setState({
+            [candidate]: votes
          })
       })
    }
 
    getAllCandidates(){
-      this.Voting.deployed().then(instance => {
-         instance.getAllCandidates.call().then(candidates => {
-            let candidatesNames = candidates.map(candidate => {
-               let name = this.web3.toUtf8(candidate)
-               if(name.length > 0)
-                  return name
-            })
+      this.ContractInstance.getAllCandidates((err, candidates) => {
+         let candidatesNames = candidates.map(candidate => {
+            let name = this.web3.toUtf8(candidate)
+            if(name.length > 0)
+               return name
+         })
 
-            candidatesNames.forEach((candidate, index) => {
-               instance.getVotesCandidate.call(candidate).then(votes => {
-                  return parseInt(votes)
-               }).then(votes => {
-                  this.setState({
-                     [candidatesNames[index]]: votes
-                  })
+         candidatesNames.forEach((candidate, index) => {
+            this.ContractInstance.getVotesCandidate(candidate, (err, votes) => {
+               this.setState({
+                  [candidatesNames[index]]: parseInt(votes)
                })
             })
          })
@@ -77,9 +68,7 @@ class App extends React.Component{
       if(candidateName != 'undefined' && candidateName.length > 0){
          const candidateNameHex = this.web3.fromUtf8(candidateName)
 
-         this.Voting.deployed().then(instance => {
-            return instance.createCandidate(candidateNameHex, {gas: 2000000, from: this.web3.eth.accounts[0]})
-         }).then(result => {
+         this.ContractInstance.createCandidate(candidateNameHex, {gas: 100000, from: this.web3.eth.accounts[0]}, (err, result) => {
             this.getCandidateVotes(candidateName)
          })
       }

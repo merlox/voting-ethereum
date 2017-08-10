@@ -1,10 +1,10 @@
 pragma solidity ^0.4.11;
 
 contract Voting{
-   bytes32[] public candidates;
+   bytes32[] candidates;
    address owner;
 
-   mapping(bytes32 => uint8) public votesForCandidates;
+   mapping(bytes32 => uint8) votesForCandidates;
 
    function Voting(bytes32[] initialCandidates){
       candidates = initialCandidates;
